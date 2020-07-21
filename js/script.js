@@ -33,6 +33,7 @@ window.addEventListener('DOMContentLoaded', function () {
         const target = event.target;
         if (target && target.classList.contains('tabheader__item')) {
             tabs.forEach((item, i) => {
+                // noinspection EqualityComparisonWithCoercionJS
                 if (target == item) {
                     hideTabContent();
                     showTabContent(i);
@@ -69,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function setClocl(selecter, endtime) {
+    function setClock(selecter, endtime) {
         const timer = document.querySelector(selecter),
             days = timer.querySelector('#days'),
             hours = timer.querySelector('#hours'),
@@ -93,7 +94,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    setClocl('.timer', deadline);
+    setClock('.timer', deadline);
 
     // Modal
 
@@ -118,6 +119,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     modal.addEventListener('click', (event) => {
+        // noinspection EqualityComparisonWithCoercionJS,JSUnresolvedFunction
         if (event.target === modal || event.target.getAttribute('data-close') == '') {
             closeModal();
         }
@@ -197,6 +199,15 @@ window.addEventListener('DOMContentLoaded', function () {
                 new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
             });
         });
+
+    // Library Query
+
+    // axios.get('http://localhost:3000/menu')
+    //     .then(data => {
+    //         data.data.forEach(({img, altimg, title, descr, price}) => {
+    //             new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+    //         });
+    //     });
     
     // Forms
 
@@ -278,7 +289,59 @@ window.addEventListener('DOMContentLoaded', function () {
         }, 4000);
     }
 
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(res => console.log(res));
+    // fetch('http://localhost:3000/menu')
+    //     .then(data => data.json())
+    //     .then(res => console.log(res));
+
+    // Slider
+
+    const slides = document.querySelectorAll(".offer__slide"),
+        prev = document.querySelector('.offer__slider-prev'),
+        next = document.querySelector('.offer__slider-next'),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current');
+    let slideIndex = 1;
+
+    showSlides(slideIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        // noinspection JSValidateTypes
+        total.textContent = slides.length;
+    }
+    
+    function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+
+        slides[slideIndex - 1].style.display = 'block';
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            // noinspection JSValidateTypes
+            current.textContent = slideIndex;
+        }
+    }
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    prev.addEventListener('click', () => {
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', () => {
+       plusSlides(1);
+    });
+
 });
