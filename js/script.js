@@ -371,6 +371,19 @@ window.addEventListener('DOMContentLoaded', function () {
         dots.push(dot);
     }
 
+    function dotsCondition () {
+        if (slides.length < 10) {
+            current.textContent =  `0${slideIndex}`;
+        } else {
+            current.textContent =  slideIndex;
+        }
+    }
+
+    function dotsStyle () {
+        dots.forEach(dot => dot.style.opacity = ".5");
+        dots[slideIndex-1].style.opacity = 1;
+    }
+
     next.addEventListener('click', () => {
         if (offset == (+width.slice(0, width.length - 2) * (slides.length - 1))) {
             offset = 0;
@@ -386,14 +399,8 @@ window.addEventListener('DOMContentLoaded', function () {
             slideIndex++;
         }
 
-        if (slides.length < 10) {
-            current.textContent =  `0${slideIndex}`;
-        } else {
-            current.textContent =  slideIndex;
-        }
-
-        dots.forEach(dot => dot.style.opacity = ".5");
-        dots[slideIndex-1].style.opacity = 1;
+        dotsCondition();
+        dotsStyle();
     });
 
     prev.addEventListener('click', () => {
@@ -411,14 +418,8 @@ window.addEventListener('DOMContentLoaded', function () {
             slideIndex--;
         }
 
-        if (slides.length < 10) {
-            current.textContent =  `0${slideIndex}`;
-        } else {
-            current.textContent =  slideIndex;
-        }
-
-        dots.forEach(dot => dot.style.opacity = ".5");
-        dots[slideIndex-1].style.opacity = 1;
+        dotsCondition();
+        dotsStyle();
     });
 
     dots.forEach(dot => {
@@ -430,14 +431,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
             slidesField.style.transform = `translateX(-${offset}px)`;
 
-            if (slides.length < 10) {
-                current.textContent =  `0${slideIndex}`;
-            } else {
-                current.textContent =  slideIndex;
-            }
-
-            dots.forEach(dot => dot.style.opacity = ".5");
-            dots[slideIndex-1].style.opacity = 1;
+            dotsCondition();
+            dotsStyle();
         });
     });
     // Slider -v_1
